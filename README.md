@@ -1,10 +1,12 @@
 # 🖥️ Process Planning Simulator
 
-A browser-based CPU Process Scheduling Simulator designed to demonstrate and visualize how different scheduling algorithms manage process execution in an operating system.  
-The simulator allows users to input multiple processes with Arrival Time, Burst Time, and Priority values.  
-It supports popular algorithms like FCFS, SJF, Priority Scheduling, and Round Robin for performance comparison.  
-Interactive Gantt charts and computed metrics such as Waiting Time and Turnaround Time help in clear understanding.  
-This project serves as an educational tool for learning Operating System concepts through real-time simulation.
+<p align="center">
+A browser-based CPU Process Scheduling Simulator developed to demonstrate <br>
+how different scheduling algorithms manage process execution in an operating <br>
+system environment. The simulator allows users to input multiple processes <br>
+with Arrival Time, Burst Time, and Priority values for realistic testing. <br>
+Interactive Gantt charts with Waiting and Turnaround metrics make learning easier.
+</p>
 
 🔗 **Live Demo:**  
 

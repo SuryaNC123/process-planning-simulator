@@ -1,0 +1,209 @@
+I am building a CPU Process Scheduling Simulator as a BTech Operating Systems project.
+
+IMPORTANT:
+The project is already partially implemented and working.
+DO NOT rewrite everything.
+ONLY extend and modify incrementally.
+
+-----------------------------------
+ALLOWED LANGUAGES & TOOLS (STRICT)
+-----------------------------------
+- HTML (structure only)
+- CSS (styling only)
+- Vanilla JavaScript (plain JS only)
+- Browser-based execution only
+
+-----------------------------------
+NOT ALLOWED (DO NOT USE)
+-----------------------------------
+- React
+- TypeScript
+- Node.js
+- Backend servers
+- Databases
+- Frameworks or libraries
+- External APIs
+- OS-level or hardware interaction
+
+-----------------------------------
+PROJECT CONTEXT
+-----------------------------------
+This is a SOFTWARE-ONLY simulation project.
+
+It logically simulates CPU scheduling behavior.
+It DOES NOT interact with real CPU or hardware.
+
+All calculations must run entirely inside the browser using JavaScript.
+
+-----------------------------------
+CURRENT FEATURES (ALREADY WORKING)
+-----------------------------------
+- Add Process form
+- Process Queue table
+- Algorithm selection
+- Gantt chart visualization
+- Detailed results (CT, TAT, WT, RT)
+- Execution logs
+- Summary metrics
+
+Extend these features WITHOUT breaking them.
+
+===================================
+REQUIRED MODIFICATIONS
+===================================
+
+Apply the following changes carefully and incrementally.
+
+-----------------------------------
+CHANGE 1 — Number of Processes Input
+-----------------------------------
+In the Add Process section:
+
+Add a new input at the top:
+"Number of Processes"
+
+Behavior:
+- User specifies total processes
+- Validate and limit additions accordingly
+- Then user enters:
+  PID, Arrival Time, Burst Time, Priority
+
+-----------------------------------
+CHANGE 2 — Perfect Priority Alignment (CSS Fix)
+-----------------------------------
+Fix UI alignment:
+
+Currently:
+- PID, Arrival, Burst are aligned
+- Priority is slightly shifted
+
+Requirement:
+- Priority must be EXACTLY aligned horizontally
+- Same height and baseline
+- Use CSS flex/grid/table
+- Do NOT use manual margins
+
+-----------------------------------
+CHANGE 3 — Execution Logs Toggle
+-----------------------------------
+Move Execution Logs section:
+
+Placement:
+Immediately AFTER the Gantt Chart
+
+Behavior:
+- Hidden by default
+- Add button: "Show Execution Logs"
+- Toggle show/hide on click
+
+Goal:
+Cleaner UI
+
+-----------------------------------
+CHANGE 4 — Section Order Restructure
+-----------------------------------
+Reorder page layout as:
+
+1. Header
+2. Add Processes
+3. Process Queue
+4. Algorithm Selection
+5. Run Simulation
+6. Gantt Chart
+7. Execution Logs (toggle)
+8. Detailed Results Table
+9. Summary Dashboard (AT VERY BOTTOM)
+
+Move summary metrics to bottom:
+- Avg Turnaround Time
+- Avg Waiting Time
+- CPU Utilization
+- Context Switch Count
+- Total Idle Time
+
+-----------------------------------
+CHANGE 5 — Move Algorithm Selector
+-----------------------------------
+Algorithm selection should appear AFTER the Process Queue.
+
+Flow:
+Input → Queue → Choose Algorithm → Run
+
+NOT algorithm first.
+
+-----------------------------------
+CHANGE 6 — Hover Formula Tooltips
+-----------------------------------
+In Detailed Results table:
+
+Add hover tooltips (NO CLICK) for:
+
+Turnaround Time:
+"Turnaround Time = Completion Time − Arrival Time"
+
+Waiting Time:
+"Waiting Time = Turnaround Time − Burst Time"
+
+Response Time:
+"Response Time = First CPU Start − Arrival Time"
+
+Use:
+- title attribute OR
+- CSS tooltip OR
+- small JS
+NO libraries
+
+-----------------------------------
+CHANGE 7 — Simplified Header
+-----------------------------------
+Simplify heading text.
+
+Replace long heading with:
+
+Main Title:
+"Process Scheduling Simulator"
+
+Small subtitle:
+"Process Scheduling Visualizer"
+
+Keep minimal and clean.
+
+-----------------------------------
+CHANGE 8 — Round Robin Dual Gantt Charts
+-----------------------------------
+ONLY when Round Robin algorithm is selected:
+
+Show TWO charts:
+
+1) Round Robin Execution Timeline
+   - Shows execution per time quantum
+   - Visualizes rotation/preemption
+
+2) Final Gantt Chart
+   - Normal combined timeline (existing one)
+
+For all other algorithms:
+- Show only ONE Gantt chart
+
+Use conditional rendering with JavaScript.
+
+-----------------------------------
+IMPLEMENTATION RULES (VERY IMPORTANT)
+-----------------------------------
+- Do NOT rewrite entire project
+- Extend existing files only
+- Keep beginner-friendly code
+- Add comments
+- Use only Vanilla JS DOM manipulation
+- No frameworks
+- No backend
+- Test each change incrementally
+- Maintain current functionality
+
+-----------------------------------
+HOW TO PROCEED
+-----------------------------------
+1. Detect existing structure
+2. Apply each change step-by-step
+3. Do not delete working code
+4. Keep UI clean and simple

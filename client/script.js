@@ -375,6 +375,8 @@ function runPriorityPreemptive(procs) {
 function runRR(procs) {
     let currentTime = 0, completed = 0, n = procs.length, remainingTime = procs.map(p => p.burstTime), isCompleted = new Array(n).fill(false), gantt = [], idleTime = 0, contextSwitches = 0, lastProcessId = null;
     let firstResponse = new Array(n).fill(-1), queue = [], visited = new Array(n).fill(false);
+    let executionTimeline = [];
+
     function checkNewArrivals(time) {
         let arrivals = [];
         for(let i=0; i<n; i++) { if(procs[i].arrivalTime <= time && !visited[i]) arrivals.push(i); }
@@ -390,7 +392,11 @@ function runRR(procs) {
             lastProcessId = p.id;
             let execTime = Math.min(timeQuantum, remainingTime[idx]);
             log(currentTime, `Executing ${p.id} for ${execTime} units`);
-            gantt.push({ id: p.id, start: currentTime, end: currentTime + execTime, duration: execTime });
+            
+            let block = { id: p.id, start: currentTime, end: currentTime + execTime, duration: execTime };
+            gantt.push(block);
+            executionTimeline.push(block);
+
             for (let t = 1; t <= execTime; t++) { currentTime++; remainingTime[idx]--; checkNewArrivals(currentTime); }
             if (remainingTime[idx] === 0) {
                 p.completionTime = currentTime;
@@ -407,14 +413,17 @@ function runRR(procs) {
             for(let i=0; i<n; i++) { if(!visited[i] && procs[i].arrivalTime < nextArrival) nextArrival = procs[i].arrivalTime; }
             if (nextArrival === Infinity) break;
             let idleDur = nextArrival - currentTime;
-            gantt.push({ id: "IDLE", start: currentTime, end: nextArrival, duration: idleDur });
+            let block = { id: "IDLE", start: currentTime, end: nextArrival, duration: idleDur };
+            gantt.push(block);
+            executionTimeline.push(block);
             log(currentTime, `CPU Idle`);
             idleTime += idleDur; currentTime = nextArrival;
             checkNewArrivals(currentTime); lastProcessId = "IDLE";
         }
     }
-    gantt = mergeGanttBlocks(gantt);
-    return { completed: procs, gantt, idleTime, contextSwitches };
+    // For RR, we want to keep the timeline separate from merged Gantt
+    const finalGantt = mergeGanttBlocks(JSON.parse(JSON.stringify(gantt)));
+    return { completed: procs, gantt: finalGantt, executionTimeline, idleTime, contextSwitches };
 }
 
 function mergeGanttBlocks(gantt) {
@@ -429,34 +438,77 @@ function mergeGanttBlocks(gantt) {
     return merged;
 }
 
+function renderGantt(containerId, axisId, blocks) {
+    const container = document.getElementById(containerId);
+    const axis = document.getElementById(axisId);
+    container.innerHTML = "";
+    axis.innerHTML = "";
+    
+    if (blocks.length === 0) return;
+    
+    const totalTime = blocks[blocks.length - 1].end;
+    
+    blocks.forEach(block => {
+        const div = document.createElement("div");
+        div.className = `gantt-block ${block.id === "IDLE" ? "idle" : ""}`;
+        if(block.id !== "IDLE") {
+            const num = parseInt(block.id.replace(/\D/g, '')) || 0;
+            div.classList.add(`p-color-${(num - 1) % 5}`);
+        }
+        const width = (block.duration / totalTime) * 100;
+        div.style.width = `${width}%`;
+        div.textContent = block.id;
+        div.title = `${block.id}: ${block.start} - ${block.end}`;
+        container.appendChild(div);
+
+        const mark = document.createElement("div");
+        mark.className = "time-mark";
+        mark.style.left = `${(block.start / totalTime) * 100}%`;
+        mark.textContent = block.start;
+        axis.appendChild(mark);
+    });
+    
+    const finalMark = document.createElement("div");
+    finalMark.className = "time-mark";
+    finalMark.style.left = "100%";
+    finalMark.textContent = totalTime;
+    axis.appendChild(finalMark);
+}
+
 function renderResults(result) {
     const tbody = document.getElementById("result-body");
     tbody.innerHTML = "";
     let totalTat = 0, totalWt = 0, totalBurst = 0;
+    
     result.completed.forEach(p => {
-        totalTat += p.turnaroundTime; totalWt += p.waitingTime; totalBurst += p.burstTime;
+        totalTat += p.turnaroundTime;
+        totalWt += p.waitingTime;
+        totalBurst += p.burstTime;
         const row = document.createElement("tr");
-        row.innerHTML = `<td>${p.id}</td><td>${p.arrivalTime}</td><td>${p.burstTime}</td><td>${p.priority}</td><td>${p.completionTime}</td><td>${p.turnaroundTime}</td><td>${p.waitingTime}</td><td>${p.responseTime}</td>`;
+        row.innerHTML = `
+            <td>${p.id}</td>
+            <td>${p.arrivalTime}</td>
+            <td>${p.burstTime}</td>
+            <td>${p.priority}</td>
+            <td>${p.completionTime}</td>
+            <td>${p.turnaroundTime}</td>
+            <td>${p.waitingTime}</td>
+            <td>${p.responseTime}</td>
+        `;
         tbody.appendChild(row);
     });
-    const ganttContainer = document.getElementById("gantt-chart");
-    const timeAxis = document.getElementById("gantt-time-axis");
-    ganttContainer.innerHTML = ""; timeAxis.innerHTML = "";
+
+    const rrSection = document.getElementById("rr-execution-section");
+    if (selectedAlgorithm === "RR" && result.executionTimeline) {
+        rrSection.style.display = "block";
+        renderGantt("rr-execution-chart", "rr-execution-time-axis", result.executionTimeline);
+    } else {
+        rrSection.style.display = "none";
+    }
+
+    renderGantt("gantt-chart", "gantt-time-axis", result.gantt);
+
     const totalTime = result.gantt[result.gantt.length - 1].end;
-    result.gantt.forEach(block => {
-        const div = document.createElement("div");
-        div.className = `gantt-block ${block.id === "IDLE" ? "idle" : ""}`;
-        if(block.id !== "IDLE") { const num = parseInt(block.id.replace(/\D/g, '')) || 0; div.classList.add(`p-color-${(num - 1) % 5}`); }
-        const width = (block.duration / totalTime) * 100;
-        div.style.width = `${width}%`; div.textContent = block.id; div.title = `${block.id}: ${block.start} - ${block.end}`;
-        ganttContainer.appendChild(div);
-        const mark = document.createElement("div");
-        mark.className = "time-mark"; mark.style.left = `${(block.start / totalTime) * 100}%`; mark.textContent = block.start;
-        timeAxis.appendChild(mark);
-    });
-    const finalMark = document.createElement("div");
-    finalMark.className = "time-mark"; finalMark.style.left = "100%"; finalMark.textContent = totalTime;
-    timeAxis.appendChild(finalMark);
     document.getElementById("avg-tat").textContent = (totalTat / result.completed.length).toFixed(2);
     document.getElementById("avg-wt").textContent = (totalWt / result.completed.length).toFixed(2);
     document.getElementById("cpu-util").textContent = `${((totalBurst / totalTime) * 100).toFixed(2)}%`;

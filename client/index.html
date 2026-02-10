@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CPU Process Scheduling Simulator</title>
+    <title>Process Scheduling Simulator</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>CPU Scheduler Simulator</h1>
-            <p>Visualize CPU scheduling algorithms logically. Browser-based, no backend.</p>
+            <h1>Process Scheduling Simulator</h1>
+            <p>Process Scheduling Visualizer</p>
         </header>
 
         <!-- 1. Add Processes -->
@@ -96,7 +96,15 @@
         <div class="results-container" id="results-container" style="display:none;">
             <!-- 5. Gantt Chart -->
             <div class="visualization-section card-panel">
-                <h3>Gantt Chart</h3>
+                <div id="rr-execution-section" style="display: none; margin-bottom: 20px;">
+                    <h3>Round Robin Execution Timeline</h3>
+                    <div class="gantt-wrapper">
+                        <div id="rr-execution-chart" class="gantt-chart"></div>
+                        <div class="gantt-time-axis" id="rr-execution-time-axis"></div>
+                    </div>
+                </div>
+
+                <h3>Final Gantt Chart</h3>
                 <div class="gantt-wrapper">
                     <div id="gantt-chart" class="gantt-chart"></div>
                     <div class="gantt-time-axis" id="gantt-time-axis"></div>
@@ -123,9 +131,9 @@
                             <th>Burst</th>
                             <th>Priority</th>
                             <th>Completion</th>
-                            <th>Turnaround</th>
-                            <th>Waiting</th>
-                            <th>Response</th>
+                            <th title="Turnaround Time = Completion Time − Arrival Time">Turnaround (?)</th>
+                            <th title="Waiting Time = Turnaround Time − Burst Time">Waiting (?)</th>
+                            <th title="Response Time = First CPU Start − Arrival Time">Response (?)</th>
                         </tr>
                     </thead>
                     <tbody id="result-body"></tbody>

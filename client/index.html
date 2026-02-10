@@ -1,15 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fira+Code:wght@300..700&family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400..700;1,400..700&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Outfit:wght@100..900&family=Oxanium:wght@200..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPU Process Scheduling Simulator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CPU Scheduler Simulator</h1>
+            <p>Visualize CPU scheduling algorithms logically. Browser-based, no backend.</p>
+        </header>
+
+        <div class="controls-section">
+            <div class="control-row">
+                <div class="algorithm-selector">
+                    <label for="algorithm">Algorithm:</label>
+                    <select id="algorithm">
+                        <option value="FCFS">First Come First Serve (FCFS)</option>
+                        <option value="SJF">Shortest Job First (Non-Preemptive)</option>
+                        <option value="SRTF">Shortest Remaining Time First (Preemptive)</option>
+                        <option value="Priority">Priority (Non-Preemptive)</option>
+                        <option value="PriorityPreemptive">Priority (Preemptive)</option>
+                        <option value="RR">Round Robin</option>
+                    </select>
+                </div>
+
+                <div class="time-quantum-box" id="time-quantum-box" style="display: none;">
+                    <label for="time-quantum">Time Quantum:</label>
+                    <input type="number" id="time-quantum" value="2" min="1">
+                </div>
+            </div>
+            <div id="algo-description" class="algo-desc">Executes processes in the order they arrive. Simple and fair but can lead to the convoy effect.</div>
+        </div>
+
+        <div class="input-section card-panel">
+            <h3>Add Process</h3>
+            <div class="input-group">
+                <div class="input-field">
+                    <label>Process ID</label>
+                    <input type="text" id="pid" placeholder="e.g. P1" value="P1">
+                </div>
+                <div class="input-field">
+                    <label>Arrival Time</label>
+                    <input type="number" id="arrival-time" placeholder="0" value="0" min="0">
+                </div>
+                <div class="input-field">
+                    <label>Burst Time</label>
+                    <input type="number" id="burst-time" placeholder="1" value="1" min="1">
+                </div>
+                <div class="input-field">
+                    <label>Priority</label>
+                    <input type="number" id="priority" placeholder="1" value="1" min="1">
+                    <small>Lower # = Higher Priority</small>
+                </div>
+                <button id="add-btn" class="primary-btn">Add</button>
+            </div>
+            <div id="input-error" class="error-msg"></div>
+        </div>
+
+        <div class="process-list-section card-panel">
+            <h3>Process Queue</h3>
+            <table id="input-table">
+                <thead>
+                    <tr>
+                        <th>PID</th>
+                        <th>Arrival Time</th>
+                        <th>Burst Time</th>
+                        <th>Priority</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="process-list-body">
+                    <!-- Processes go here -->
+                </tbody>
+            </table>
+            <div class="action-buttons">
+                <button id="run-btn" class="run-btn">Run Simulation</button>
+                <button id="reset-btn" class="secondary-btn">Reset</button>
+            </div>
+        </div>
+
+        <div class="results-container" id="results-container" style="display:none;">
+            <div class="visualization-section card-panel">
+                <h3>Gantt Chart</h3>
+                <div class="gantt-wrapper">
+                    <div id="gantt-chart" class="gantt-chart"></div>
+                    <div class="gantt-time-axis" id="gantt-time-axis"></div>
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <div class="metric-card">
+                    <h4>Avg Turnaround</h4>
+                    <span id="avg-tat">0.00</span>
+                </div>
+                <div class="metric-card">
+                    <h4>Avg Waiting</h4>
+                    <span id="avg-wt">0.00</span>
+                </div>
+                <div class="metric-card">
+                    <h4>CPU Utilization</h4>
+                    <span id="cpu-util">0%</span>
+                </div>
+                <div class="metric-card">
+                    <h4>Context Switches</h4>
+                    <span id="context-switches">0</span>
+                </div>
+                <div class="metric-card">
+                    <h4>Total Idle Time</h4>
+                    <span id="idle-time">0</span>
+                </div>
+            </div>
+
+            <div class="results-section card-panel">
+                <h3>Detailed Results</h3>
+                <table id="result-table">
+                    <thead>
+                        <tr>
+                            <th>PID</th>
+                            <th>Arrival</th>
+                            <th>Burst</th>
+                            <th>Priority</th>
+                            <th>Completion</th>
+                            <th>Turnaround</th>
+                            <th>Waiting</th>
+                            <th>Response</th>
+                        </tr>
+                    </thead>
+                    <tbody id="result-body"></tbody>
+                </table>
+            </div>
+            
+            <div class="logs-section card-panel">
+                <h3>Execution Logs</h3>
+                <div id="logs-panel" class="logs-panel"></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
 </html>

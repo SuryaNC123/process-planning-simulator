@@ -1,0 +1,124 @@
+I am building a CPU Process Scheduling Simulator as a BTech Operating Systems project.
+
+IMPORTANT: 
+Use ONLY the following languages and tools.
+Do NOT use anything else.
+
+-----------------------------------
+ALLOWED LANGUAGES & TOOLS
+-----------------------------------
+- HTML (for structure and UI)
+- CSS (for styling only)
+- Vanilla JavaScript (plain JavaScript, no TypeScript)
+- Browser-based execution only
+
+-----------------------------------
+NOT ALLOWED (DO NOT USE)
+-----------------------------------
+- React
+- TypeScript
+- Node.js
+- Backend servers
+- Databases (MySQL, MongoDB, etc.)
+- Frameworks or libraries
+- OS-level or hardware code
+- Any external APIs
+
+-----------------------------------
+PROJECT CONTEXT
+-----------------------------------
+This is a SOFTWARE-ONLY simulation project.
+It simulates CPU scheduling behavior logically.
+It does NOT interact with real CPU or hardware.
+
+-----------------------------------
+CURRENT STATUS
+-----------------------------------
+I already have:
+- Input UI for processes (PID, Arrival Time, Burst Time, Priority)
+- Algorithm selection dropdown
+- Gantt chart visualization
+- Result table (CT, TAT, WT, RT)
+- Average metrics
+
+-----------------------------------
+FEATURES TO IMPLEMENT / EXTEND
+-----------------------------------
+
+1. Time Quantum Handling
+- Show Time Quantum input ONLY when Round Robin is selected
+- Hide or disable it for all other algorithms
+- Validate Time Quantum > 0
+
+2. CPU Idle Time Handling
+- Detect gaps when no process is available
+- Insert explicit "IDLE" blocks in the Gantt chart
+- Calculate total CPU idle time
+
+3. Context Switch Tracking
+- Count context switches whenever CPU changes process
+- Display count in summary dashboard
+
+4. Ready Queue Visualization
+- Display current ready queue during simulation
+- Update it as time progresses
+- Show queue in format: [P2, P4, P5]
+
+5. Algorithm Explanation Box
+- Display short explanation of selected algorithm
+- Update dynamically on algorithm change
+
+6. Summary Dashboard
+Display:
+- Total CPU Time
+- CPU Idle Time
+- CPU Utilization (%)
+- Context Switch Count
+- Algorithm Efficiency Score
+
+7. Algorithm Comparison Mode
+- Run FCFS, SJF, Priority, and Round Robin on same input
+- Show comparison table with:
+  - Average Waiting Time
+  - Average Turnaround Time
+  - CPU Utilization
+  - Context Switches
+- Highlight best algorithm
+
+8. Execution Logs Panel
+- Log events like:
+  - Process arrival
+  - Preemption
+  - Completion
+- Example:
+  "Time 3: P2 arrived"
+
+9. Timeline Replay Slider
+- Allow step-by-step replay of simulation
+- Highlight active process and ready queue
+
+10. UI Enhancements
+- Reset / Reload button
+- Dark / Light mode (CSS only)
+- Input validation messages
+
+-----------------------------------
+IMPLEMENTATION RULES
+-----------------------------------
+- Use only HTML, CSS, and Vanilla JavaScript
+- Do NOT introduce TypeScript or frameworks
+- Extend existing files, do not rewrite everything
+- Keep code beginner-friendly and well-commented
+- Implement features incrementally
+- Ensure existing functionality continues to work
+
+-----------------------------------
+START WITH
+-----------------------------------
+1. Identifying existing code
+2. Adding Time Quantum toggle logic
+3. Adding CPU idle handling and context switch tracking
+4. Then proceed feature by feature
+
+Generate changes step by step.
+DO NOT overwrite working code.

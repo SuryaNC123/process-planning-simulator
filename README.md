@@ -61,5 +61,3 @@ B.Tech Project – process-planning simulator
 
 This project is for educational purposes.
 Free to use and modify.
-### Method 1 (Easy)
-Just open:

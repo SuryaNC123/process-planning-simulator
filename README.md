@@ -1,11 +1,7 @@
 # 🖥️ Process Planning Simulator
 
-<p align="center">
-A browser-based CPU Process Scheduling Simulator developed to demonstrate <br>
-how different scheduling algorithms manage process execution in an operating <br>
-system environment. The simulator allows users to input multiple processes <br>
-with Arrival Time, Burst Time, and Priority values for realistic testing. <br>
-Interactive Gantt charts with Waiting and Turnaround metrics make learning easier.
+<p align="justify">
+A browser-based CPU Process Scheduling Simulator developed to demonstrate how different scheduling algorithms manage process execution in an operating system environment. The simulator allows users to input multiple processes with Arrival Time, Burst Time, and Priority values for realistic testing. Interactive Gantt charts visually represent execution order while automatically calculating Waiting Time and Turnaround Time. Round Robin scheduling includes both Ready Queue and Final Gantt visualizations for deeper understanding. This project serves as an educational tool for students to clearly learn, analyze, and compare CPU scheduling techniques in a practical way.
 </p>
 
 🔗 **Live Demo:**  

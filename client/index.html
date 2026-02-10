@@ -14,30 +14,13 @@
             <p>Visualize CPU scheduling algorithms logically. Browser-based, no backend.</p>
         </header>
 
-        <div class="controls-section">
-            <div class="control-row">
-                <div class="algorithm-selector">
-                    <label for="algorithm">Algorithm:</label>
-                    <select id="algorithm">
-                        <option value="FCFS">First Come First Serve (FCFS)</option>
-                        <option value="SJF">Shortest Job First (Non-Preemptive)</option>
-                        <option value="SRTF">Shortest Remaining Time First (Preemptive)</option>
-                        <option value="Priority">Priority (Non-Preemptive)</option>
-                        <option value="PriorityPreemptive">Priority (Preemptive)</option>
-                        <option value="RR">Round Robin</option>
-                    </select>
-                </div>
-
-                <div class="time-quantum-box" id="time-quantum-box" style="display: none;">
-                    <label for="time-quantum">Time Quantum:</label>
-                    <input type="number" id="time-quantum" value="2" min="1">
-                </div>
-            </div>
-            <div id="algo-description" class="algo-desc">Executes processes in the order they arrive. Simple and fair but can lead to the convoy effect.</div>
-        </div>
-
+        <!-- 1. Add Processes -->
         <div class="input-section card-panel">
             <h3>Add Process</h3>
+            <div class="num-processes-box">
+                <label for="num-processes">Number of Processes:</label>
+                <input type="number" id="num-processes" value="5" min="1">
+            </div>
             <div class="input-group">
                 <div class="input-field">
                     <label>Process ID</label>
@@ -61,6 +44,7 @@
             <div id="input-error" class="error-msg"></div>
         </div>
 
+        <!-- 2. Process Queue -->
         <div class="process-list-section card-panel">
             <h3>Process Queue</h3>
             <table id="input-table">
@@ -77,13 +61,40 @@
                     <!-- Processes go here -->
                 </tbody>
             </table>
-            <div class="action-buttons">
+        </div>
+
+        <!-- 3. Algorithm Selection -->
+        <div class="controls-section">
+            <h3>Select Algorithm</h3>
+            <div class="control-row">
+                <div class="algorithm-selector">
+                    <label for="algorithm">Algorithm:</label>
+                    <select id="algorithm">
+                        <option value="FCFS">First Come First Serve (FCFS)</option>
+                        <option value="SJF">Shortest Job First (Non-Preemptive)</option>
+                        <option value="SRTF">Shortest Remaining Time First (Preemptive)</option>
+                        <option value="Priority">Priority (Non-Preemptive)</option>
+                        <option value="PriorityPreemptive">Priority (Preemptive)</option>
+                        <option value="RR">Round Robin</option>
+                    </select>
+                </div>
+
+                <div class="time-quantum-box" id="time-quantum-box" style="display: none;">
+                    <label for="time-quantum">Time Quantum:</label>
+                    <input type="number" id="time-quantum" value="2" min="1">
+                </div>
+            </div>
+            <div id="algo-description" class="algo-desc">Executes processes in the order they arrive. Simple and fair but can lead to the convoy effect.</div>
+            
+            <!-- 4. Run Simulation -->
+            <div class="action-buttons" style="margin-top: 20px;">
                 <button id="run-btn" class="run-btn">Run Simulation</button>
                 <button id="reset-btn" class="secondary-btn">Reset</button>
             </div>
         </div>
 
         <div class="results-container" id="results-container" style="display:none;">
+            <!-- 5. Gantt Chart -->
             <div class="visualization-section card-panel">
                 <h3>Gantt Chart</h3>
                 <div class="gantt-wrapper">
@@ -92,6 +103,36 @@
                 </div>
             </div>
 
+            <!-- 6. Execution Logs (toggle) -->
+            <div class="logs-toggle-section">
+                <button id="toggle-logs-btn" class="secondary-btn">Show Execution Logs</button>
+                <div id="logs-section" class="logs-section card-panel" style="display: none; margin-top: 15px;">
+                    <h3>Execution Logs</h3>
+                    <div id="logs-panel" class="logs-panel"></div>
+                </div>
+            </div>
+
+            <!-- 7. Detailed Results Table -->
+            <div class="results-section card-panel">
+                <h3>Detailed Results</h3>
+                <table id="result-table">
+                    <thead>
+                        <tr>
+                            <th>PID</th>
+                            <th>Arrival</th>
+                            <th>Burst</th>
+                            <th>Priority</th>
+                            <th>Completion</th>
+                            <th>Turnaround</th>
+                            <th>Waiting</th>
+                            <th>Response</th>
+                        </tr>
+                    </thead>
+                    <tbody id="result-body"></tbody>
+                </table>
+            </div>
+            
+            <!-- 8. Summary Dashboard -->
             <div class="dashboard-section">
                 <div class="metric-card">
                     <h4>Avg Turnaround</h4>
@@ -113,30 +154,6 @@
                     <h4>Total Idle Time</h4>
                     <span id="idle-time">0</span>
                 </div>
-            </div>
-
-            <div class="results-section card-panel">
-                <h3>Detailed Results</h3>
-                <table id="result-table">
-                    <thead>
-                        <tr>
-                            <th>PID</th>
-                            <th>Arrival</th>
-                            <th>Burst</th>
-                            <th>Priority</th>
-                            <th>Completion</th>
-                            <th>Turnaround</th>
-                            <th>Waiting</th>
-                            <th>Response</th>
-                        </tr>
-                    </thead>
-                    <tbody id="result-body"></tbody>
-                </table>
-            </div>
-            
-            <div class="logs-section card-panel">
-                <h3>Execution Logs</h3>
-                <div id="logs-panel" class="logs-panel"></div>
             </div>
         </div>
     </div>

@@ -78,6 +78,17 @@ h3 {
     font-size: 0.9rem;
 }
 
+.num-processes-box {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.num-processes-box input {
+    width: 80px;
+}
+
 .input-group {
     display: flex;
     gap: 15px;
@@ -88,6 +99,15 @@ h3 {
 .input-field {
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
+}
+
+/* Fix for priority alignment */
+.input-field small {
+    display: block;
+    line-height: 1;
+    margin-top: 4px;
+    height: 12px;
 }
 
 label {
@@ -101,6 +121,8 @@ input, select {
     border: 1px solid var(--border-color);
     border-radius: 4px;
     font-family: inherit;
+    height: 38px;
+    box-sizing: border-box;
 }
 
 input:focus, select:focus {
@@ -116,6 +138,7 @@ button {
     border: none;
     font-weight: 500;
     transition: background-color 0.2s;
+    height: 38px;
 }
 
 .primary-btn {
@@ -131,7 +154,8 @@ button {
     background-color: var(--success-color);
     color: white;
     font-size: 1rem;
-    padding: 10px 20px;
+    padding: 0 20px;
+    height: 44px;
 }
 
 .run-btn:hover {
@@ -152,6 +176,7 @@ button {
     color: var(--danger-color);
     padding: 4px 8px;
     font-size: 0.8rem;
+    height: auto;
 }
 
 .delete-btn:hover {
@@ -182,11 +207,21 @@ th {
     min-height: 1.2em;
 }
 
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
 /* Results Styles */
+.logs-toggle-section {
+    margin-bottom: 20px;
+}
+
 .dashboard-section {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 15px;
+    margin-top: 20px;
     margin-bottom: 20px;
 }
 
